@@ -26,7 +26,7 @@ bot.on("ready", () => {
 });
 
 bot.on("message", message => {
-    if (message.channel.id === "692949538604056628") { //This will make the bot work only in that channel
+    if (message.channel.id === "706933933677477978") { //This will make the bot work only in that channel
         if (message.author.bot) return;
         var command = message.content
             .toLowerCase()
@@ -38,9 +38,11 @@ bot.on("message", message => {
         }
 
         if (command === "gen") {
+            var moment = require('moment');
+            var currentTime = moment().format();
             if (generated.has(message.author.id)) {
                 message.channel.send(
-                    "Wait 15 minute before generating another account!. - " +
+                    "Please wait at least 10 minutes before generating another account!. - " +
                     message.author
                 );
             } else {
@@ -49,7 +51,7 @@ bot.on("message", message => {
                 if (!args[0])
                     return message.reply("Please, specify the service you want!");
                 var fs = require("fs");
-                const filePath = __dirname + "/" + args[0] + ".txt";
+                const filePath = __dirname + "/stock/" + args[0] + ".txt";
 
                 fs.readFile(filePath, function (err, data) {
                     if (!err) {
@@ -64,14 +66,14 @@ bot.on("message", message => {
                                     title: "Account Generated!",
                                     description: "Check your dm for the account's information!",
                                     color: 8519796,
-                                    timestamp: "2019-04-04T14:16:26.398Z",
+                                    timestamp: currentTime,
                                     footer: {
                                         icon_url:
                                             "https://cdn.discordapp.com/avatars/530778425540083723/7a05e4dd16825d47b6cdfb02b92d26a5.png",
                                     },
                                     thumbnail: {
                                         url:
-                                            "http://www.compartosanita.it/wp-content/uploads/2019/02/right.png"
+                                            "https://i.ibb.co/f9CvMvX/Untitled-1-8.png"
                                     },
                                     author: {
                                         name: "Account Generator",
@@ -85,7 +87,7 @@ bot.on("message", message => {
                                 setTimeout(() => {
                                     // Removes the user from the set after a minute
                                     generated.delete(message.author.id);
-                                }, 150000);
+                                }, 100000);
                                 if (err) {
                                     console.log(err);
                                 }
@@ -138,6 +140,8 @@ bot.on("message", message => {
             });
         }
         if (command === "stock"){
+            var moment = require('moment');
+            var currentTime = moment().format();
             var content;
             var fs = require("fs");
             
@@ -152,14 +156,42 @@ bot.on("message", message => {
                 var content = fs.readFileSync(filePath, 'utf8');
                 var stockVal = content.split("\n").length;
                 var stockName = require('path').parse(stockFiles[i]).name;
-                info = info + stockName + ": " + String(stockVal) + "\n";
+                var capital = stockName.charAt(0).toUpperCase() + stockName.slice(1);
+                info = info + capital + ": " + String(stockVal) + "\n";
             }
             
             const embed = {
                 title: "Stock Info",
                 description: info,
                 color: 8519796,
-                timestamp: "2019-04-04T14:16:26.398Z",
+                timestamp: currentTime,
+                footer: {
+                    icon_url:
+                        "https://i.ibb.co/f9CvMvX/Untitled-1-8.png",
+                },
+                thumbnail: {
+                    url:
+                        "https://i.ibb.co/f9CvMvX/Untitled-1-8.png"
+                },
+                author: {
+                    name: "Account Generator",
+                    url: "https://discordapp.com",
+                    icon_url: bot.displayAvatarURL
+                },
+                fields: []
+            };
+            message.channel.send({ embed });
+            generated.add(message.author.id);
+            
+        }
+        if (command === "help"){         
+            var moment = require('moment');
+            var currentTime = moment().format(); 
+            const embed = {
+                title: "Available Commands",
+                description: "!stock [Check Stock Info] \n !gen <hulu,disney,etc.> [Gen Account Info]",
+                color: 8519796,
+                timestamp: currentTime,
                 footer: {
                     icon_url:
                         "https://cdn.discordapp.com/avatars/530778425540083723/7a05e4dd16825d47b6cdfb02b92d26a5.png",
@@ -182,4 +214,4 @@ bot.on("message", message => {
     }
 });
 
-bot.login("NzEzMTQyODkwNTUzMTQ3Mzkz.Xsb0Mw.t0D7tQ658bl5WdsS9eKHYDA_98s");
+bot.login("NzEzMjg4MzEwMDU0OTc3NTM2.Xsd7jQ.8kgjwzeYffBJjTIpj2H1VFpg1nc");
