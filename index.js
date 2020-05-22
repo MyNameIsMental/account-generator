@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
-const prefix = "/";
+const prefix = "!";
+
 var fs = require("fs");
 var lineReader = require("line-reader");
 var async = require("async");
@@ -14,7 +15,7 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 //For avoidong Heroku $PORT error
-app.get('/', function (request, response) {
+app.get(prefix, function (request, response) {
     var result = 'App is running'
     response.send(result);
 }).listen(app.get('port'), function () {
@@ -25,7 +26,7 @@ bot.on("ready", () => {
 });
 
 bot.on("message", message => {
-    if (message.channel.id === "Channel_ID") { //This will make the bot work only in that channel
+    if (message.channel.id === "692949538604056628") { //This will make the bot work only in that channel
         if (message.author.bot) return;
         var command = message.content
             .toLowerCase()
@@ -67,7 +68,6 @@ bot.on("message", message => {
                                     footer: {
                                         icon_url:
                                             "https://cdn.discordapp.com/avatars/530778425540083723/7a05e4dd16825d47b6cdfb02b92d26a5.png",
-                                        text: "Buy discord accounts from Mental#8106"
                                     },
                                     thumbnail: {
                                         url:
@@ -120,7 +120,7 @@ bot.on("message", message => {
             const filePath = __dirname + "/" + args[1] + ".txt";
             fs.appendFile(filePath, os.EOL + args[0], function (err) {
                 if (err) return console.log(err);
-                message.channel.send("Done!")
+                message.channel.send("Done!");
             });
 
 
@@ -131,33 +131,55 @@ bot.on("message", message => {
             var fs = require("fs");
             let messageArray = message.content.split(" ");
             let args = messageArray.slice(1);
-            const filePath = __dirname + "/" + args[0] + ".txt";
+            const filePath = __dirname + "/stock/" + args[0] + ".txt";
             fs.writeFile(filePath, 'first:first', function (err) {
                 if (err) throw err;
                 message.channel.send("Done!")
             });
         }
-        if (command === "restock") {
+        if (command === "stock"){
+            var content;
+            var fs = require("fs");
+            
             let messageArray = message.content.split(" ");
             let args = messageArray.slice(1);
-            if (!message.member.hasPermission("ADMINISTRATOR"))
-                return message.reply("Sorry, you can't do it, you are not an admin!");
-            if (!args[0])
-                return message.reply(
-                    "Please, specify the service you want to restock!"
-                );
-            message.channel.send(
-                "@everyone " +
-                "**" +
-                args[0] +
-                "**" +
-                " has been restocked by " +
-                "<@" +
-                message.author.id +
-                ">"
-            );
+            const dir = './stock';
+            const stockFiles = fs.readdirSync(dir)
+            var info = ' ';
+
+            for (var i = 0; i < stockFiles.length; ++i){
+                const filePath = __dirname + "/stock/" + stockFiles[i];
+                var content = fs.readFileSync(filePath, 'utf8');
+                var stockVal = content.split("\n").length;
+                var stockName = require('path').parse(stockFiles[i]).name;
+                info = info + stockName + ": " + String(stockVal) + "\n";
+            }
+            
+            const embed = {
+                title: "Stock Info",
+                description: info,
+                color: 8519796,
+                timestamp: "2019-04-04T14:16:26.398Z",
+                footer: {
+                    icon_url:
+                        "https://cdn.discordapp.com/avatars/530778425540083723/7a05e4dd16825d47b6cdfb02b92d26a5.png",
+                },
+                thumbnail: {
+                    url:
+                        "https://i.ibb.co/f9CvMvX/Untitled-1-8.png"
+                },
+                author: {
+                    name: "Account Generator",
+                    url: "https://discordapp.com",
+                    icon_url: bot.displayAvatarURL
+                },
+                fields: []
+            };
+            message.channel.send({ embed });
+            generated.add(message.author.id);
+            
         }
     }
 });
 
-bot.login("Token");
+bot.login("NzEzMTQyODkwNTUzMTQ3Mzkz.Xsb0Mw.t0D7tQ658bl5WdsS9eKHYDA_98s");
