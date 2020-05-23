@@ -4,7 +4,7 @@ const prefix = "!";
 const fs = require("fs");
 const os = require("os");
 const generated = new Set();
-
+const token = "INSERT BOT TOKEN HERE";
 
 var express = require('express');
 var app = express();
@@ -24,7 +24,7 @@ bot.on("ready", () => {
 
 
 bot.on("message", message => {
-    if (message.channel.id === "713556712157609994") { //This will make the bot work only in that channel
+    if (message.channel.id === "INSERT CHANNEL ID") { //This will make the bot work only in that channel
         if (message.author.bot) return;
         var command = message.content
             .toLowerCase()
@@ -72,7 +72,7 @@ bot.on("message", message => {
                                     },
                                     thumbnail: {
                                         url:
-                                            "https://i.ibb.co/f9CvMvX/Untitled-1-8.png"
+                                            "INSERT LOGO"
                                     },
                                     author: {
                                         name: "Account Generator",
@@ -105,11 +105,6 @@ bot.on("message", message => {
                 });
             }
         }
-        else
-            if (command === "stats") {
-
-                message.channel.send(`Total users: ${bot.users.size}`)
-            }
 
         if (command === "add") {
             if (!message.member.hasPermission("ADMINISTRATOR"))
@@ -154,7 +149,7 @@ bot.on("message", message => {
                 .setColor(8519796)
                 .setTimestamp(currentTime)
                 .setFooter("created by austin_hx#2583")
-                .setThumbnail("https://i.ibb.co/f9CvMvX/Untitled-1-8.png")
+                .setThumbnail("INSERT LOGO HERE")
                 .setAuthor("Account Generator");
             
             for (var i = 0; i < stockFiles.length; ++i){
@@ -186,7 +181,7 @@ bot.on("message", message => {
                 },
                 thumbnail: {
                     url:
-                        "https://i.ibb.co/f9CvMvX/Untitled-1-8.png"
+                        "INSERT LOGO"
                 },
                 author: {
                     name: "Account Generator",
@@ -201,4 +196,4 @@ bot.on("message", message => {
     }
 });
 
-bot.login("NzEzMjM1NDc2NTA0NTEwNDc0.Xsh0uA.lugst2cmp9t1TOx3LC0Pu3OHAeo");
+bot.login(token);
