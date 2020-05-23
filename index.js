@@ -1,13 +1,10 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
 const prefix = "!";
-
-var fs = require("fs");
-var lineReader = require("line-reader");
-var async = require("async");
-const firstline = require("firstline");
+const fs = require("fs");
+const os = require("os");
 const generated = new Set();
-var os = require("os");
+
 
 var express = require('express');
 var app = express();
@@ -25,8 +22,9 @@ bot.on("ready", () => {
     console.log(`Logged in as ${bot.user.tag}!`);
 });
 
+
 bot.on("message", message => {
-    if (message.channel.id === "706933933677477978") { //This will make the bot work only in that channel
+    if (message.channel.id === "713556712157609994") { //This will make the bot work only in that channel
         if (message.author.bot) return;
         var command = message.content
             .toLowerCase()
@@ -42,15 +40,16 @@ bot.on("message", message => {
             var currentTime = moment().format();
             if (generated.has(message.author.id)) {
                 message.channel.send(
-                    "Please wait at least 10 minutes before generating another account!. - " +
+                    "Please wait at least 5 minutes before generating another account!. - " + 
                     message.author
                 );
+               
             } else {
                 let messageArray = message.content.split(" ");
                 let args = messageArray.slice(1);
                 if (!args[0])
                     return message.reply("Please, specify the service you want!");
-                var fs = require("fs");
+
                 const filePath = __dirname + "/stock/" + args[0] + ".txt";
 
                 fs.readFile(filePath, function (err, data) {
@@ -84,10 +83,11 @@ bot.on("message", message => {
                                 };
                                 message.channel.send({ embed });
                                 generated.add(message.author.id);
+                                console.log(generated);
                                 setTimeout(() => {
-                                    // Removes the user from the set after a minute
                                     generated.delete(message.author.id);
-                                }, 100000);
+                                    console.log(generated);
+                                }, 300000);
                                 if (err) {
                                     console.log(err);
                                 }
@@ -114,7 +114,6 @@ bot.on("message", message => {
         if (command === "add") {
             if (!message.member.hasPermission("ADMINISTRATOR"))
                 return message.reply("Sorry, you can't do it, you are not an admin!");
-            var fs = require("fs");
             let messageArray = message.content.split(" ");
             let args = messageArray.slice(1);
             var account = args[0]
@@ -130,7 +129,6 @@ bot.on("message", message => {
         if (command === "create") {
             if (!message.member.hasPermission("ADMINISTRATOR"))
                 return message.reply("Sorry, you can't do it, you are not an admin!");
-            var fs = require("fs");
             let messageArray = message.content.split(" ");
             let args = messageArray.slice(1);
             const filePath = __dirname + "/stock/" + args[0] + ".txt";
@@ -143,7 +141,6 @@ bot.on("message", message => {
             var moment = require('moment');
             var currentTime = moment().format();
             var content;
-            var fs = require("fs");
             
             let messageArray = message.content.split(" ");
             let args = messageArray.slice(1);
@@ -151,39 +148,30 @@ bot.on("message", message => {
             const stockFiles = fs.readdirSync(dir)
             var info = ' ';
 
+            const embed = new Discord.RichEmbed()
+                .setTitle("Stock Info")
+                .setDescription(info)
+                .setColor(8519796)
+                .setTimestamp(currentTime)
+                .setFooter("created by austin_hx#2583")
+                .setThumbnail("https://i.ibb.co/f9CvMvX/Untitled-1-8.png")
+                .setAuthor("Account Generator");
+            
             for (var i = 0; i < stockFiles.length; ++i){
                 const filePath = __dirname + "/stock/" + stockFiles[i];
                 var content = fs.readFileSync(filePath, 'utf8');
                 var stockVal = content.split("\n").length;
                 var stockName = require('path').parse(stockFiles[i]).name;
                 var capital = stockName.charAt(0).toUpperCase() + stockName.slice(1);
-                info = info + capital + ": " + String(stockVal) + "\n";
+                embed.addField(capital, stockVal);
             }
-            
-            const embed = {
-                title: "Stock Info",
-                description: info,
-                color: 8519796,
-                timestamp: currentTime,
-                footer: {
-                    icon_url:
-                        "https://i.ibb.co/f9CvMvX/Untitled-1-8.png",
-                },
-                thumbnail: {
-                    url:
-                        "https://i.ibb.co/f9CvMvX/Untitled-1-8.png"
-                },
-                author: {
-                    name: "Account Generator",
-                    url: "https://discordapp.com",
-                    icon_url: bot.displayAvatarURL
-                },
-                fields: []
-            };
+
             message.channel.send({ embed });
-            generated.add(message.author.id);
+            
+            console.log(generated);
             
         }
+
         if (command === "help"){         
             var moment = require('moment');
             var currentTime = moment().format(); 
@@ -208,10 +196,9 @@ bot.on("message", message => {
                 fields: []
             };
             message.channel.send({ embed });
-            generated.add(message.author.id);
             
         }
     }
 });
 
-bot.login("NzEzMjg4MzEwMDU0OTc3NTM2.Xsd7jQ.8kgjwzeYffBJjTIpj2H1VFpg1nc");
+bot.login("NzEzMjM1NDc2NTA0NTEwNDc0.Xsh0uA.lugst2cmp9t1TOx3LC0Pu3OHAeo");
