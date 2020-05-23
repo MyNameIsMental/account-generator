@@ -25,4 +25,4 @@ In the source code remember to replace "Channel ID" in the if (message.channel.i
 
 To get support use:  
 
-- Discord: Silvano#8160
+- Discord: Silvano#8160, austin_hx#2583
