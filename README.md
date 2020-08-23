@@ -56,3 +56,5 @@ npm async module for NodeJS, that reads and returns the first line of any file.
 
 ### Line-reader
 line-by-line file/stream reader with support for user-defined line separators.
+
+[![Run on Repl.it](https://repl.it/badge/github/silvanohirtie/account-generator)](https://repl.it/github/silvanohirtie/account-generator)
